@@ -1,0 +1,141 @@
+package dishSystem;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class DcApp {
+    //定义集合作为菜单，容纳菜
+    static List<Dish> dishes = new ArrayList<>();
+
+    public static void main(String[] args) {
+        //app开机，初始化客人
+        Customer customer = new Customer(3, 9);
+        System.out.println("欢迎光临");
+        //初始化菜单
+        initDish();
+        //展示主菜单
+        ShowMainMenu();
+        //展示主菜单后，开始点菜。创建扫描器对象
+        Scanner s = new Scanner(System.in);
+        //内层循环的扫描器对象
+        Scanner scanner = new Scanner(System.in);
+        //点菜系统各个功能可以循环
+        while (true) {
+            //主模块循环参数
+            String s1 = s.nextLine();
+            if ("1".equals(s1)) {
+                ShowDishMenu();
+                //点菜模块循环，可以重复点菜。bug->输入菜ID以外的字符会报异常
+                while (true) {
+                    //点菜模块循环
+                    String dishId = scanner.nextLine();
+                    //结束循环的字符
+                    if ("*".equals(dishId)) {
+                        break;
+                    }
+                    //调用方法克隆，复制菜选菜
+                    Dish R = getDish(dishId);
+                    //customer初始化客人时定义，将菜放进顾客的篮子里
+                    customer.getDishes().add(R);
+                    //提示刚点的菜
+                    System.out.println("已点" + R.getName());
+                }
+                System.out.println("点菜完成，输入#返回上一级菜单");
+            }
+            if ("2".equals(s1)) {
+                ShowOurMenu(customer);
+            }
+
+            if ("3".equals(s1)) {
+                totalPrice(customer);
+            }
+            if ("4".equals(s1)) {
+                break;
+            }
+            if ("5".equals(s1)) {
+                help();
+            }
+            if ("#".equals(s1)) {
+                ShowMainMenu();
+            }
+        }
+    }
+
+    public static void help() {
+        System.out.println("欢迎光临小舞餐厅，我是智能助手小厅，为您服务...");
+    }
+
+    public static void totalPrice(Customer customer) {
+        double total = 0;
+        //遍历顾客菜的集合，计算价格
+        for (Dish dish : customer.getDishes()) {
+            total += dish.getPrice();
+        }
+        System.out.println("菜价总额为：" + total + " 元");
+    }
+
+    public static void initDish() {
+        //初始化菜单
+        Dish d1 = new Dish("1", "土豆丝", 18.0);
+        Dish d2 = new Dish("2", "可乐虾", 58.0);
+        Dish d3 = new Dish("3", "炸排骨", 32.0);
+        Dish d4 = new Dish("4", "红烧鸡", 66.0);
+        Dish d5 = new Dish("5", "玉米粒", 22.0);
+        dishes.add(d1);
+        dishes.add(d2);
+        dishes.add(d3);
+        dishes.add(d4);
+        dishes.add(d5);
+    }
+
+    public static void ShowMainMenu() {
+        //初始化主菜单
+        System.out.println("+-------------主菜单------------+");
+        System.out.println("|   点菜                     1  |");
+        System.out.println("|   查看已点                 2  |");
+        System.out.println("|   结账                     3  |");
+        System.out.println("|   退出                     4  |");
+        System.out.println("|   帮助                     5  |");
+        System.out.println("+-------------------------------+");
+    }
+
+    public static void ShowDishMenu() {
+        //进入点菜模块后，显示菜单
+        System.out.println("+-------------菜单------------+");
+        for (Dish dish : dishes) {
+            System.out.println("|   " + dish.getDishId() + "      " +
+                    dish.getName() + "         " + dish.getPrice() + "|");
+        }
+        System.out.println("+----------------------------+");
+    }
+
+    public static Dish getDish(String dishId) {
+        Dish dish = null;
+        for (Dish d : dishes) {
+            if (d.getDishId().equals(dishId)) {
+                dish = d;
+            }
+        }
+        //复制菜，产生新的对象，把复制的对象给顾客的菜单里
+        try {
+            dish = (Dish) dish.clone();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dish;
+
+    }
+    //显示已经点好的菜，需要参数
+    private static void ShowOurMenu(Customer customer) {
+        System.out.println("+---------已经点好的菜--------+");
+        for (Dish dish : customer.getDishes()) {
+            System.out.println("|   " + dish.getDishId() + "      " +
+                    dish.getName() + "         " + dish.getPrice() + "|");
+        }
+        System.out.println("+-----------------------------+");
+    }
+
+
+}

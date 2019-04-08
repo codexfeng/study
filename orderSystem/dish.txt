@@ -1,0 +1,44 @@
+package dishSystem;
+
+public class Dish implements Cloneable{
+    //JDK提供的接口Cloneable，把菜单的菜复制到顾客的集合中
+    //实体类-菜及属性
+    private String name;
+    private String dishId;
+    private double price;
+    //构造方法及封装
+    public Dish( String dishId,String name, double price) {
+        this.name = name;
+        this.dishId = dishId;
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDishId() {
+        return dishId;
+    }
+
+    public void setDishId(String dishId) {
+        this.dishId = dishId;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+}

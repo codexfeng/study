@@ -1,0 +1,41 @@
+package dishSystem;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Customer {
+    //实体类（对象）及属性
+    private int pcount;
+    private int cId;
+    //顾客与菜的关系一对多，需要集合装菜
+    private List<Dish> D = new ArrayList<>();
+    //构造方法及封装变量
+    public Customer(int pcount, int cId) {
+        this.pcount = pcount;
+        this.cId = cId;
+    }
+
+    public List<Dish> getDishes() {
+        return D;
+    }
+
+    public void setDishes(List<Dish> dishes) {
+        this.D = dishes;
+    }
+
+    public int getPcount() {
+        return pcount;
+    }
+
+    public void setPcount(int pcount) {
+        this.pcount = pcount;
+    }
+
+    public int getcId() {
+        return cId;
+    }
+
+    public void setcId(int cId) {
+        this.cId = cId;
+    }
+}
