@@ -1,0 +1,42 @@
+package customer_model;
+
+import java.util.ArrayList;
+
+//单例模式，可以确保仓库唯一（此案例不使用）
+public class Warehouse {
+    //仓库的集合
+    private ArrayList<String> list = new ArrayList<>();
+    //向集合中添加元素的方法
+    public synchronized void add() {
+        if (list.size() < 20) {
+            list.add("a");
+        } else {
+            //return;
+            //让方法执行到这里结束方法，弊端是当list.size超过20时不会再执行
+            try {
+                //所有的线程睡眠，唤醒线程
+                this.notifyAll();
+                this.wait();//访问仓库的生产者线程进入等待状态
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public synchronized void get() {
+        if (list.size() > 0) {
+            //认为元素有序从第一个元素
+            list.remove(0);
+        } else {
+            //return;产生的问题如上
+            try {
+                //所有的线程睡眠，唤醒线程
+                this.notifyAll();
+                //线程等待
+                this.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}

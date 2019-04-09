@@ -1,0 +1,19 @@
+package customer_model;
+
+public class test {
+    //主方法验证
+    public static void main(String[] args) {
+        //里面有一个ArrayList线程非安全
+        Warehouse warehouse = new Warehouse();
+        Producer producer = new Producer(warehouse);
+        //设置线程的优先级别1-10
+        producer.setPriority(10);
+
+        Customer customer1 = new Customer(warehouse);
+        Customer customer2 = new Customer(warehouse);
+        //让线程就绪启动，执行线程取决于电脑的CPU
+        producer.start();
+        customer1.start();
+        customer2.start();
+    }
+}
