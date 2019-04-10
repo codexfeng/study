@@ -1,0 +1,37 @@
+package com.yh.jdbc.query3;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class Query3 {
+	// 查询数据库的所有数据，使用while循环
+	public static void main(String[] args) throws Exception {
+		String url = "jdbc:mysql://localhost:3306/login";
+		String user = "root";
+		String password = "123456";
+		// 1.加载驱动，把com.mysql.jdbc.Driver这分字节码加载进JVM，当字节码加载到JVM后，就会执行该字节码的静态代码块
+		// java1.6之后，不加这句话也行。在javaweb中必须加
+		Class.forName("com.mysql.jdbc.Driver");
+		// 2.获取连接对象
+		Connection conn = DriverManager.getConnection(url, user, password);
+		// 3.编写sql语句
+		String sql = "SELECT * from enp_tab";
+		// 把sql放在数据库里执行，并返回执行结果 statement表示连接数据库，由数据库执行指令
+		Statement st = conn.createStatement();
+		// 4.执行sql st对象调用方法
+		ResultSet res = st.executeQuery(sql);
+
+		while (res.next()) {
+			int id = res.getInt("id");
+			String name = res.getString("name");
+			int age = res.getInt("age");
+			System.out.println("id=" + id + "	name=" + name + "   	age=" + age);
+		}
+		// 5.释放资源
+		st.close();
+		conn.close();
+
+	}
+}

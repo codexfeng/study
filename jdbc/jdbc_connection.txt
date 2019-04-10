@@ -1,0 +1,55 @@
+package com.yh.jdbc.dml;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class Dml {
+
+	public static void main(String[] args) {
+		// 数据库的相关数值
+		String url = "jdbc:mysql://localhost:3306/practice1";
+		String user = "root";
+		String password = "123456";
+		Connection conn = null;
+		Statement st = null;
+		try {
+			// 1.加载驱动，把com.mysql.jdbc.Driver这分字节码加载进JVM，当字节码加载到JVM后，就会执行该字节码的静态代码块
+			// java1.6之后，不加这句话也行。在javaweb中必须加
+			Class.forName("com.mysql.jdbc.Driver");
+			// 2.获取连接对象
+			conn = DriverManager.getConnection(url, user, password);
+			// 3.编写sql语句
+			String sql = "insert into stu values(1,'dc',18)";
+			// 把sql放在数据库里执行，并返回执行结果 statement表示连接数据库，由数据库执行指令
+			st = conn.createStatement();
+			// 4.执行sql st对象调用方法
+			int row = st.executeUpdate(sql);
+			System.out.println(row);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// 5.释放资源
+			if (st != null) {
+				try {
+					st.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		}
+
+	}
+
+}
