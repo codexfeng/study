@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间必须是对应（BaseDao）接口的包全名 -->
+<mapper namespace="cn.ybzy.qihangkt.dao.BaseDao">
+
+	<!--<foreach>循环标签， #{param}：#代表占位符，$｛｝代表值 -->
+	<insert id="add">
+		insert into ${tableName} values
+		<foreach collection="objects" item="param" open="(" separator=","
+			close=")">
+			#{param}
+		</foreach>
+	</insert>
+
+	<insert id="addForNotMatch">
+		insert into ${tableName}
+		<foreach collection="fieldNames" item="param" open="("
+			separator="," close=")">
+			${param}
+		</foreach>
+		values
+		<foreach collection="fieldVales" item="param" open="("
+			separator="," close=")">
+			#{param}
+		</foreach>
+	</insert>
+
+	<delete id="delete">
+		delete from ${tableName} where id = #{id}
+	</delete>
+
+	<!-- 跟新数据 -->
+	<update id="update">
+		update ${tableName}
+		<set>
+			<foreach collection="objects" item="param">
+			 	${param}
+			</foreach>
+		</set>
+		where id = #{id}
+	</update>
+
+
+	<select id="select" resultType="map">
+		select * from ${tableName} where
+		id=#{id}
+	</select>
+
+	<select id="selectAll" resultType="map">
+		select * from ${tableName}
+	</select>
+
+</mapper>
